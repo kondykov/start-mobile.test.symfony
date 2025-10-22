@@ -1,0 +1,52 @@
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./src/:/var/www/
+      - ./env/nginx/:/etc/nginx/conf.d
+    ports:
+      - "8080:80"
+      - "443:443"
+    depends_on:
+      - app
+    networks:
+      - app-network
+    container_name: start-mobile.test.nginx
+
+  app:
+    build:
+      context: .
+      dockerfile: env/app/Dockerfile
+    volumes:
+      - ./src:/var/www
+    depends_on:
+      - db
+      - redis
+    networks:
+      - app-network
+    container_name: start-mobile.test.app
+
+  db:
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "start-mobile"
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "root"
+    ports:
+      - "8090:5432"
+    networks:
+      - app-network
+    container_name: start-mobile.test.database
+    
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+    container_name: start-mobile.test.redis
+    command: redis-server --save 60 1 --loglevel warning
+
+networks:
+  app-network:
+    driver: bridge
