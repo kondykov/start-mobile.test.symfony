@@ -1,0 +1,41 @@
+{% extends 'common/index.html.twig' %}
+
+{% block body %}
+    {% include 'common/components/header.html.twig' %}
+
+    <div class="container mt-5">
+        <h1>Add a new book. Author: {{ author.name }}</h1>
+
+        {% if app.session.get('validation_errors') is not empty %}
+            <div class="alert alert-danger">
+                <h5>Please fix errors:</h5>
+                <ul class="mb-0">
+                    {% for field, messages in app.session.get('validation_errors') %}
+                        {% if messages is iterable %}
+                            {% for message in messages %}
+                                <li><strong>{{ field }}:</strong> {{ message }}</li>
+                            {% endfor %}
+                        {% else %}
+                            <li><strong>{{ field }}:</strong> {{ messages }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <form action="{{ path('book_store', {'authorId': author.id}) }}" method="POST">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Book title</label>
+                <input type="text"
+                       class="form-control"
+                       id="exampleFormControlInput1"
+                       placeholder="Onegin"
+                       name="title"
+                >
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
+        </form>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'common/index.html.twig' %}
+
+{% block body %}
+    {% include 'common/components/header.html.twig' %}
+
+    <div class="container">
+        <h1>Authors</h1>
+        <a href="{{ path('author_create') }}" class="btn btn-primary">Add a new author</a>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Authors</th>
+                <th scope="col">Books count</th>
+                <th scope="col">Handle</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for author in authors %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ author.name }}</td>
+                    <td>{{ author.books|length }}</td>
+                    <td>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <a href="{{ path('author_show', {'id': author.id}) }}" class="btn btn-primary">Show</a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% include 'common/components/pagination.html.twig' %}
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'common/index.html.twig' %}
+
+{% block body %}
+    {% include 'common/components/header.html.twig' %}
+
+    <div class="container mt-5">
+        <h1>Author: {{ author.name }}</h1>
+
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <a href="{{ path('author_edit', {'id': author.id}) }}" class="btn btn-primary">Edit</a>
+            <a href="{{ path('book_add', {'authorId': author.id}) }}" class="btn btn-primary">Add a new book</a>
+        </div>
+
+        <div class="container">
+            <h5 class="mt-5 mb-5">Books</h5>
+
+            {% if books %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for book in books %}
+                        <tr>
+                            <th scope="row">{{ loop.index }}</th>
+                            <td>{{ book.title }}</td>
+                            <td>
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <form action="{{ path('book_delete', {'authorId': author.id, 'bookId': book.id}) }}"
+                                          method="POST">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <span>Books not found.</span>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+{% endblock %}

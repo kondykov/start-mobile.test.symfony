@@ -15,6 +15,20 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Interface/'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    App\Event\ExceptionSubscriber:
+        tags: ['kernel.event_subscriber']
+        arguments:
+            $twig: '@twig'
+            $requestStack: '@request_stack'
+
+    App\Event\ApiAuthSubscriber:
+        tags: ['kernel.event_subscriber']
+
+    App\Service\BookServiceInterface: '@App\Service\BookService'
+    App\Service\AuthorServiceInterface: '@App\Service\AuthorService'
