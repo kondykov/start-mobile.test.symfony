@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Author;
 use App\Repository\BookRepository;
 use App\Service\Interface\AuthorServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,9 +27,15 @@ class AuthorController extends AbstractController
         $page = $request->query->getInt('page', 1);
         $pageSize = $request->query->getInt('pageSize', 40);
         $collection = $this->authorService->getAll($page, $pageSize);
+        $booksCounts = [];
+        /** @var Author $author */
+        foreach ($collection->getData() as $author) {
+            $booksCounts[$author->getId()] = $this->bookRepository->count(['author' => $author]);
+        }
 
         return $this->render('admin/author/index.html.twig', [
             'authors' => $collection->getData(),
+            'booksCounts' => $booksCounts,
             'pagination' => $collection->getMetadata(),
         ]);
     }

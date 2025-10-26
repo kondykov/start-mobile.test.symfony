@@ -21,7 +21,7 @@
                 <tr>
                     <th scope="row">{{ loop.index }}</th>
                     <td>{{ author.name }}</td>
-                    <td>{{ author.books|length }}</td>
+                    <td>{{ booksCounts[author.id] }}</td>
                     <td>
                         <div class="btn-group" role="group" aria-label="Basic example">
                             <a href="{{ path('author_show', {'id': author.id}) }}" class="btn btn-primary">Show</a>
