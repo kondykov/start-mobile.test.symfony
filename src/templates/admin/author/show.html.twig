@@ -41,6 +41,7 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                {% include 'common/components/pagination.html.twig' %}
             {% else %}
                 <span>Books not found.</span>
             {% endif %}
