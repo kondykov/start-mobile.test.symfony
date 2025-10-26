@@ -23,7 +23,10 @@ class AuthorController extends AbstractController
     #[Route('api/v1/authors', methods: ['GET'])]
     public function index(Request $request): Response
     {
-        $collection = $this->service->getAll($request->query->getInt('page', 1));
+        $page = $request->query->getInt('page', 1);
+        $pageSize = $request->query->getInt('pageSize', 40);
+
+        $collection = $this->service->getAll($page, $pageSize);
 
         return $this->json([
             'data' => array_map(
@@ -49,6 +52,7 @@ class AuthorController extends AbstractController
             'data' => $this->extractor->extract($this->service->add($request->request->all())),
         ], 201);
     }
+
     #[Route('api/v1/authors/{id}', methods: ['PUT'])]
     public function update(Request $request, mixed $id): Response
     {

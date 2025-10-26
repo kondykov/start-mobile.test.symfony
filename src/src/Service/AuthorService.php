@@ -93,6 +93,12 @@ readonly class AuthorService implements AuthorServiceInterface
         return $author;
     }
 
+
+    function findByName(mixed $name): ?Author
+    {
+        return $this->repository->findOneBy(['name' => $name]);
+    }
+
     /**
      * @param array $data
      * @return void

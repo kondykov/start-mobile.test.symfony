@@ -62,6 +62,8 @@ readonly class BookService implements Interface\BookServiceInterface
             $author = $this->authorRepository->find($data['author']);
         } elseif (is_string($data['author'])){
             $author = $this->authorRepository->findOneBy(['name' => $data['author']]);
+        } elseif ($data['author'] instanceof Author){
+            $author = $data['author'];
         }
 
         if (!$author) {

@@ -25,7 +25,8 @@ class BookController extends AbstractController
     public function index(Request $request): Response
     {
         $page = $request->query->getInt('page', 1);
-        $collection = $this->service->getAll($page);
+        $pageSize = $request->query->getInt('pageSize', 40);
+        $collection = $this->service->getAll($page, $pageSize);
 
         return $this->json([
             'books' => array_map(

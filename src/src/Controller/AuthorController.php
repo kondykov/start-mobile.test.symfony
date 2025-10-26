@@ -23,7 +23,9 @@ class AuthorController extends AbstractController
     #[Route('/authors', name: 'authors', methods: ['GET'])]
     public function index(Request $request): Response
     {
-        $collection = $this->authorService->getAll($request->query->getInt('page', 1));
+        $page = $request->query->getInt('page', 1);
+        $pageSize = $request->query->getInt('pageSize', 40);
+        $collection = $this->authorService->getAll($page, $pageSize);
 
         return $this->render('admin/author/index.html.twig', [
             'authors' => $collection->getData(),
@@ -49,8 +51,9 @@ class AuthorController extends AbstractController
     public function show(Request $request, int $id): Response
     {
         $page = $request->query->getInt('page', 1);
+        $pageSize = $request->query->getInt('pageSize', 40);
         $author = $this->authorService->getById($id);
-        $booksCollection = $this->bookRepository->findByAuthor($author, $page);
+        $booksCollection = $this->bookRepository->findByAuthor($author, $page, $pageSize);
 
         return $this->render('admin/author/show.html.twig', [
             'author' => $author,
@@ -63,8 +66,9 @@ class AuthorController extends AbstractController
     public function edit(Request $request, int $id): Response
     {
         $page = $request->query->getInt('page', 1);
+        $pageSize = $request->query->getInt('pageSize', 40);
         $author = $this->authorService->getById($id);
-        $booksCollection = $this->bookRepository->findByAuthor($author, $page);
+        $booksCollection = $this->bookRepository->findByAuthor($author, $page, $pageSize);
 
         return $this->render('admin/author/edit.html.twig', [
             'author' => $author,
