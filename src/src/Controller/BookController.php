@@ -23,8 +23,8 @@ class BookController extends AbstractController
     #[Route('books', name: 'books', methods: ['GET'])]
     public function index(Request $request): Response
     {
-        $page = $request->get('page', 1);
-        $pageSize = $request->get('pageSize', 40);
+        $page = $request->query->getInt('page', 1);
+        $pageSize = $request->query->getInt('pageSize', 40);
         $booksCollection = $this->bookService->getAll($page, $pageSize);
 
         return $this->render('admin/book/index.html.twig', [
